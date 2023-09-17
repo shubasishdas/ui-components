@@ -2,17 +2,41 @@
 
 import { Spinner } from "@/components/spinner";
 import { Contact, useContacts } from "@/lib/contacts";
-import * as Dialog from "@radix-ui/react-dialog";
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import {
+  DiscordLogoIcon,
+  GitHubLogoIcon,
+  LinkedInLogoIcon,
+  Pencil1Icon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import { FormEvent, useState } from "react";
+import Modal from "./component/modal";
+import { DashboardIcon } from "@radix-ui/react-icons";
 
 export const ContactContainer = () => {
   const { contacts } = useContacts();
   return (
-    <div className="space-y-4">
-      {contacts.map((contact: Contact) => (
-        <ContactCard key={contact.id} contact={contact} />
-      ))}
+    <div className=" flex flex-col gap-4">
+      <div className="flex justify-end">
+        <Modal>
+          <Modal.Button>
+            <DashboardIcon />
+          </Modal.Button>
+          <Modal.Content title="Hey 👋 Shubasish here!">
+            <div className=" flex  gap-4 mt-6">
+              <TwitterLogoIcon />
+              <DiscordLogoIcon />
+              <LinkedInLogoIcon />
+              <GitHubLogoIcon />
+            </div>
+          </Modal.Content>
+        </Modal>
+      </div>
+      <div className="space-y-4">
+        {contacts.map((contact: Contact) => (
+          <ContactCard key={contact.id} contact={contact} />
+        ))}
+      </div>
     </div>
   );
 };
@@ -30,18 +54,14 @@ const ContactCard = ({ contact }: { contact: Contact }) => {
         <p className="text-sm text-gray-500">{contact.email}</p>
       </div>
       <div>
-        <Dialog.Root open={open} onOpenChange={setOpen}>
-          <Dialog.Trigger>
+        <Modal open={open} setOpen={setOpen}>
+          <Modal.Button className="rounded p-2 hover:bg-gray-200">
             <Pencil1Icon />
-          </Dialog.Trigger>
-          <Dialog.Portal>
-            <Dialog.Overlay className=" fixed inset-0 bg-slate-300/50 data-[state=closed]:animate-[dialog-overlay-hide_200ms] data-[state=open]:animate-[dialog-overlay-show_200ms]" />
-            <Dialog.Content className="fixed left-1/2 top-1/2 bg-black/50 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-md bg-white shadow p-8 text-gray-900 data-[state=closed]:animate-[dialog-content-hide_200ms] data-[state=open]:animate-[dialog-content-show_200ms] ">
-              <Dialog.Title className="">Edit contact</Dialog.Title>
-              <ContactForm contact={contact} afterSave={() => setOpen(false)} />
-            </Dialog.Content>
-          </Dialog.Portal>
-        </Dialog.Root>
+          </Modal.Button>
+          <Modal.Content title="Edit contact">
+            <ContactForm contact={contact} afterSave={() => setOpen(false)} />
+          </Modal.Content>
+        </Modal>
       </div>
     </div>
   );
@@ -106,9 +126,9 @@ const ContactForm = ({
           </div>
         </div>
         <div className="mt-8 space-x-6 text-right">
-          <Dialog.Close className="rounded px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-600">
+          <Modal.Close className="rounded px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-600">
             Cancel
-          </Dialog.Close>
+          </Modal.Close>
           <button className="inline-flex items-center justify-center rounded bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600 group-disabled:pointer-events-none">
             <Spinner className="absolute h-4 group-enabled:opacity-0" />
             <span className="group-disabled:opacity-0">Save</span>
