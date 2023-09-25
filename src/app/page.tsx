@@ -1,18 +1,18 @@
 import Link from "next/link";
 
 const plannedUIComponents = [
-  { name: "dialog" },
-  { name: "accordion" },
-  { name: "alert-dialog" },
-  { name: "checkbox" },
-  { name: "collapsible" },
-  { name: "dropdown-menu" },
-  { name: "form" },
-  { name: "hover-card" },
-  { name: "menubar" },
-  { name: "popover" },
-  { name: "scroll area" },
-  { name: "progress" },
+  { name: "dialog", completed: true },
+  { name: "accordion", completed: false },
+  { name: "alert-dialog", completed: false },
+  { name: "checkbox", completed: false },
+  { name: "collapsible", completed: false },
+  { name: "dropdown-menu", completed: false },
+  { name: "form", completed: false },
+  { name: "hover-card", completed: false },
+  { name: "menubar", completed: false },
+  { name: "popover", completed: false },
+  { name: "scroll area", completed: false },
+  { name: "progress", completed: false },
 ];
 
 export default function HomePage() {
@@ -23,8 +23,12 @@ export default function HomePage() {
         {plannedUIComponents.map((component, index) => (
           <Link
             key={index}
-            href={`./${component.name}`}
-            className="p-2 text-gray-500 hover:bg-gray-500/50 hover:rounded-md hover:text-white"
+            href={component.completed ? `./${component.name}` : "/"}
+            className={`p-2 text-gray-500  hover:rounded-md hover:text-white ${
+              component.completed
+                ? "hover:bg-indigo-500/50"
+                : "hover:bg-yellow-500/50"
+            }`}
           >
             <div className=" w-fit text-lg font-semibold  ">
               {component.name}
